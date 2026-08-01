@@ -1,0 +1,15 @@
+[versions]
+# https://kotlinlang.org/docs/home.html
+kotlin = "2.4.10"
+# https://github.com/Kotlin/kotlinx.serialization/releases/latest
+kotlinx-serialization = "1.11.0"
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+[libraries]
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
+[bundles]

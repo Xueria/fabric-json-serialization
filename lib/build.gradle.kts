@@ -43,6 +43,6 @@ tasks.withType(JavaCompile::class).configureEach {
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_1_8)
-        moduleName.set("lib")
+        moduleName.set(libraryName)
     }
 }

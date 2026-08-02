@@ -1,17 +1,25 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.serialization)
-}
-
+val libraryReadableName = providers.gradleProperty("libraryReadableName").get()
+val libraryDescription = providers.gradleProperty("libraryDescription").get()
+val libraryGroup = providers.gradleProperty("libraryGroup").get()
 val libraryName = providers.gradleProperty("libraryName").get()
 val libraryVersion = providers.gradleProperty("libraryVersion").get()
 
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.vanniktech.maven.publish)
+    signing
+}
+
+group = libraryGroup
+version = libraryVersion
+description = libraryDescription
+
 base {
     this@base.archivesName = libraryName
-    version = libraryVersion
 }
 
 repositories {
@@ -25,6 +33,7 @@ dependencies {
 }
 
 java {
+    withSourcesJar()
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
@@ -44,5 +53,39 @@ tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_1_8)
         moduleName.set(libraryName)
+    }
+}
+
+signing {
+    useGpgCmd()
+}
+
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+
+    coordinates(groupId = libraryGroup, artifactId = libraryName, version = libraryVersion)
+
+    pom {
+        name = libraryReadableName
+        description = libraryDescription
+        url = "https://github.com/Xueria/fabric-json-serialization"
+
+        licenses {
+            license {
+                name = "MIT License"
+                url = "https://opensource.org/licenses/MIT"
+            }
+        }
+
+        developers {
+            developer {
+                name = "Xueria"
+            }
+        }
+
+        scm {
+            url = "https://github.com/Xueria/fabric-json-serialization"
+        }
     }
 }

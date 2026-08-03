@@ -1,0 +1,30 @@
+name: build
+on: [ pull_request, push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+
+      - name: setup java
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: temurin
+
+      - name: setup gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: make gradlew executable
+        run: chmod +x gradlew
+
+      - name: build
+        run: ./gradlew build
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Artifact
+          path: lib/build/libs/

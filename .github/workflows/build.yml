@@ -1,0 +1,31 @@
+name: build
+on: [ pull_request, push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+
+      - name: validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v6
+
+      - name: setup java
+        uses: actions/setup-java@v5
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: setup gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: build
+        shell: bash
+        run: ./gradlew build
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Artifact
+          path: build/libs/

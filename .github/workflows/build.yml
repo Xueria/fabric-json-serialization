@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: Artifact
-          path: build/libs/
+          path: lib/build/libs/
